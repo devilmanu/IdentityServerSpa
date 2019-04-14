@@ -1,0 +1,12 @@
+
+
+
+
+$import-google-fonts: true !default;
+$font-url: 'https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin,latin-ext' !default;
+$font-name: 'Lato' !default;
+$font-family: $font-name, 'Helvetica Neue', Arial, Helvetica, sans-serif !default;
+$icons-font-path: 'node_modules/semantic-ui-sass/icons';
+$flags-image-path: 'node_modules/semantic-ui-sass/images';
+
+@import '../../../../node_modules/semantic-ui-sass/semantic-ui';

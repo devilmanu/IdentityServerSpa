@@ -1,4 +1,5 @@
 ﻿using IdentityRightWay.Domain.Entities;
+using IdentityRightWay.Domain.Shared.Exceptions;
 using IdentityRightWay.Infrastructure.Bus.Commands;
 using IdentityRightWay.Infrastructure.Bus.Queries;
 using IdentityRightWay.Services.Shared;
@@ -33,24 +34,14 @@ namespace IdentityRightWay.Services.Modules.Identity.Login
                     return new IdentityRightWayResponseBase<bool> { Errors = new string[] { "User Locked" }, IsValid = false, Payload = false };
                 else if (result.IsNotAllowed)
                     return new IdentityRightWayResponseBase<bool> { Errors = new string[] { "User in not Allowed" }, IsValid = false, Payload = false };
-                else if (result.RequiresTwoFactor)
+                else if(result.RequiresTwoFactor)
                     return new IdentityRightWayResponseBase<bool> { Errors = new string[] { "Requires two factor" }, IsValid = false, Payload = false };
                 else
-                    return new IdentityRightWayResponseBase<bool>
-                    {
-                        Errors = new string[] { "Wrong password" },
-                        IsValid = true,
-                        Payload = true,
-                    };
+                    throw new IdentityRightWayException("User not found", 404);
             }
             else
             {
-                return new IdentityRightWayResponseBase<bool>
-                {
-                    Errors = new string[] { "Email not Found" },
-                    IsValid = false,
-                    Payload = false,
-                };
+                throw new IdentityRightWayException("User not found", 404);
             }
         }
     }

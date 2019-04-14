@@ -1,4 +1,5 @@
 ﻿using IdentityRightWay.Domain.Entities;
+using IdentityRightWay.Domain.Shared.Exceptions;
 using IdentityRightWay.Infrastructure.Bus.Commands;
 using IdentityRightWay.Infrastructure.Bus.Queries;
 using IdentityRightWay.Services.Shared;
@@ -36,11 +37,7 @@ namespace IdentityRightWay.Services.Modules.Identity.ForgotPassword
             }
             else
             {
-                return new IdentityRightWayResponseBase<ForgotPasswordDto>
-                {
-                    Errors = new string[] { "Email not found" },
-                    IsValid = false,
-                };
+                throw new IdentityRightWayException("User not found", 404);
             }
         }
     }

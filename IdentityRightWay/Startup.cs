@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
+using IdentityRightWay.Api.Shared;
 using IdentityRightWay.Domain.Entities;
 using IdentityRightWay.Infrastructure.Bus.Commands;
 using IdentityRightWay.Infrastructure.Bus.Queries;
@@ -42,7 +44,17 @@ namespace IdentityRightWay
             services.AddScoped<IQueryBus, QueryBus>();
 
             var migrationAssemby = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(opts =>
+            {
+                opts.Filters.Add(new IdentityRightWayExceptionHandler());
+                opts.Filters.Add(new IdentityRightWayValidationHandler());
+            })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation()
+                .ConfigureApiBehaviorOptions(opts =>
+                {
+                    opts.SuppressModelStateInvalidFilter = true;
+                });
 
             services.Scan(scan => scan
                 .FromAssembliesOf(typeof(Startup))
@@ -75,6 +87,20 @@ namespace IdentityRightWay
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+
+            services.AddCors(action =>
+              action.AddPolicy("cors", builder =>
+                builder
+                 .AllowAnyMethod()
+                 .AllowAnyHeader()
+                 .WithOrigins("http://localhost:4200", "http://localhost:8080")
+                 .AllowCredentials()));
+        }
+
+        private void AddFluentValidation()
+        {
+            throw new NotImplementedException();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

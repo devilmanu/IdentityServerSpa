@@ -27,7 +27,7 @@ namespace IdentityRightWay.Api.V1
         /// <param name="loginQuery"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginQuery loginQuery)
+        public async Task<IActionResult> Login([FromForm] LoginQuery loginQuery)
         {
             var response = await queryBus.Send(loginQuery);
             return Ok(response);

@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Shared\NewFolder\" />
     <Folder Include="Infrastructure\Bus\Events\" />
     <Folder Include="Infrastructure\Bus\Queries\" />
     <Folder Include="Services\Modules\Identity\Logout\" />

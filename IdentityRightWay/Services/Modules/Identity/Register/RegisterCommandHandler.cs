@@ -1,4 +1,5 @@
 ﻿using IdentityRightWay.Domain.Entities;
+using IdentityRightWay.Domain.Shared.Exceptions;
 using IdentityRightWay.Infrastructure.Bus.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -37,7 +38,7 @@ namespace IdentityRightWay.Services.Modules.Identity.Register
             }
             else
             {
-                throw new Exception("Email already exist");
+                throw new IdentityRightWayException("Email already exist", 400);
             }
         }
     }

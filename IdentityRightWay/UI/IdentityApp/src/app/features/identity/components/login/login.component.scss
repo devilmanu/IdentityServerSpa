@@ -1,0 +1,29 @@
+.login-content{
+    display: flex;
+    flex-direction: column;
+    > .logo-content{
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        > img {
+            align-self: center;
+            max-width: 30%;
+            max-height: 30%;
+        }
+        > .logo-name {
+            align-self: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 50px;
+        }
+    }
+    > .form-content{
+        display: flex;
+        flex-direction: column;
+        :nth-child(odd){
+            margin-top: 10px;
+        }
+        > .form-buttons{
+            
+        }
+    }
+}

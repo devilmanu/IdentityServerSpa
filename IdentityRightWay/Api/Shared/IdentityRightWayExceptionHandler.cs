@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using IdentityRightWay.Domain.Shared.Exceptions;
+using IdentityRightWay.Services.Shared;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +13,20 @@ namespace IdentityRightWay.Api.Shared
     {
         public override void OnException(ExceptionContext context)
         {
-            context.HttpC
+            if (context.Exception is IdentityRightWayException)
+            {
+                var ex = context.Exception as IdentityRightWayException;
+                context.Result = new ObjectResult(
+                    new IdentityRightWayResponseBase<string>
+                    {
+                        Errors = new string[] { ex.Message },
+                        IsValid = false,
+                        Payload = null,
+                        TotalCount = null
+                    }
+                );
+                context.HttpContext.Response.StatusCode = ex.StatusCode;
+            }
         }
     }
 }
