@@ -17,13 +17,16 @@
         }
     }
     > .form-content{
+        margin-top: 20px;
         display: flex;
         flex-direction: column;
-        :nth-child(odd){
+        > :nth-child(even){
             margin-top: 10px;
         }
         > .form-buttons{
-            
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-evenly;
         }
     }
 }

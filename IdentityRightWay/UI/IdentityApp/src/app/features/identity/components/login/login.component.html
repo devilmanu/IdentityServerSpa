@@ -3,22 +3,28 @@
     <img src="/assets/images/microsoft-logo.png">
     <h2 class="logo-name">Microshit</h2>
   </div>
-  <div class="form-content">
+  <form class="form-content" [formGroup]="loginForm">
     <div class="ui big left icon input">
-      <input type="text" placeholder="Email...">
+      <input type="text" placeholder="Email..."  autocomplete="email" formControlName="email" [ngClass]="{ 'error' : loginForm.controls['email'].errors?.required}">
       <i class="envelope outline icon"></i>
     </div>
     <div class="ui big left icon input">
-      <input type="password" placeholder="Password">
+      <input type="password" placeholder="Password..." autocomplete="current-password" formControlName="password">
       <i class="key icon"></i>
     </div>
+    <div *ngIf="loginForm.invalid && loginForm.touched"class="ui error message">
+      <ul class="list">
+        <li *ngIf="loginForm.controls['email'].errors?.required">Email is <strong>Required</strong></li>
+        <li *ngIf="loginForm.controls['password'].errors?.required">Password is <strong>Required</strong></li>
+      </ul>
+    </div>
     <div class="form-buttons">
-      <button class="ui big button green">
+      <button class="ui big button green" [disabled]="loginForm.invalid" (click)="login()">
         Login
       </button>
       <button class="ui big button red">
         Register
       </button>
     </div>
-  </div>
+  </form>
 </div>
