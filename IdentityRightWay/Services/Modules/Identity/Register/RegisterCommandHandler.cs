@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,6 +28,7 @@ namespace IdentityRightWay.Services.Modules.Identity.Register
             {
                 var userToRegister = new AppUser
                 {
+                    UserName = $"{request.Name}.{request.FristName}.{request.LastName}.{request.Email}",
                     Email = request.Email,
                     Id = request.Id,
                 };
@@ -34,11 +36,11 @@ namespace IdentityRightWay.Services.Modules.Identity.Register
                 if (result.Succeeded)
                     return new Unit();
                 else
-                    throw new Exception(result.Errors.FirstOrDefault().Description);
+                    throw new IdentityRightWayException(HttpStatusCode.NotFound, result.Errors.Select(o => o.Description).ToArray());
             }
             else
             {
-                throw new IdentityRightWayException("Email already exist", 400);
+                throw new IdentityRightWayException(HttpStatusCode.NotFound, "Email already registered");
             }
         }
     }

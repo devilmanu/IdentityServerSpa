@@ -1,1 +1,4 @@
-@import '../../../../node_modules/roboto-fontface/css/mixins.scss'
+@import '../../../../node_modules/roboto-fontface/css/mixins.scss';
+
+$SourceSansProFontsPath : 'node_modules/fontface-source-sans-pro/fonts';
+@import '../../../../node_modules/fontface-source-sans-pro/scss/source-sans-pro.scss'

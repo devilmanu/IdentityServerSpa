@@ -1,28 +1,40 @@
-<div class="login-content">
+<div class="login-content ui segment">
+
+  <div class="ui active inverted dimmer" *ngIf="(loginStore$ | async)?.loading">
+    <div class="ui large text loader">Loading</div>
+  </div>
+
   <div class="logo-content">
     <img src="/assets/images/microsoft-logo.png">
     <h2 class="logo-name">Microshit</h2>
   </div>
   <form class="form-content" [formGroup]="loginForm">
-    <div class="ui big left icon input">
-      <input type="text" placeholder="Email..."  autocomplete="email" formControlName="email" [ngClass]="{ 'error' : loginForm.controls['email'].errors?.required}">
+    <div class="ui big left icon input"
+      [ngClass]="{ 'error' : loginForm.controls['email'].dirty && loginForm.controls['email'].errors?.required}">
+      <input type="text" placeholder="Email..." autocomplete="email" formControlName="email">
       <i class="envelope outline icon"></i>
     </div>
-    <div class="ui big left icon input">
+    <div class="ui big left icon input"
+      [ngClass]="{ 'error' : loginForm.controls['password'].dirty && loginForm.controls['password'].errors?.required}">
       <input type="password" placeholder="Password..." autocomplete="current-password" formControlName="password">
       <i class="key icon"></i>
     </div>
-    <div *ngIf="loginForm.invalid && loginForm.touched"class="ui error message">
+    <div *ngIf="loginForm.invalid && loginForm.touched" class="ui error message">
       <ul class="list">
         <li *ngIf="loginForm.controls['email'].errors?.required">Email is <strong>Required</strong></li>
         <li *ngIf="loginForm.controls['password'].errors?.required">Password is <strong>Required</strong></li>
+      </ul>
+    </div>
+    <div *ngIf="(this.loginStore$ | async)?.errors as errors" class="ui error message">
+      <ul class="list">
+        <li *ngFor="let error of errors"><strong>{{error}}</strong></li>
       </ul>
     </div>
     <div class="form-buttons">
       <button class="ui big button green" [disabled]="loginForm.invalid" (click)="login()">
         Login
       </button>
-      <button class="ui big button red">
+      <button class="ui big button red" (click)="goToRegister()">
         Register
       </button>
     </div>

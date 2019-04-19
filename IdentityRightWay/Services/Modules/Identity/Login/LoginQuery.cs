@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IdentityRightWay.Services.Modules.Identity.Login
 {
-    public class LoginQuery : IQuery<IdentityRightWayResponseBase<bool>>
+    public class LoginQuery : IQuery<IdentityRightWayResponseBase<LoginDto>>
     {
         public string Email { get; set; }
         public string Password { get; set; }

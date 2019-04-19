@@ -1,0 +1,64 @@
+<div class="login-content ui segment">
+
+  <div class="ui active inverted dimmer" *ngIf="(registerStore$ | async)?.loading">
+    <div class="ui large text loader">Loading</div>
+  </div>
+
+  <div class="logo-content">
+    <img src="/assets/images/microsoft-logo.png">
+    <h2 class="logo-name">Microshit</h2>
+  </div>
+  <form class="form-content" [formGroup]="registerForm">
+    <div class="ui big left icon input"
+      [ngClass]="{ 'error' : registerForm.controls['name'].dirty && registerForm.controls['name'].errors?.required}">
+      <input type="text" placeholder="Name" formControlName="name">
+      <i class="user outline icon"></i>
+    </div>
+    <div class="ui big left icon input"
+      [ngClass]="{ 'error' : registerForm.controls['fristName'].dirty && registerForm.controls['fristName'].errors?.required}">
+      <input type="text" placeholder="FristName..." formControlName="fristName">
+      <i class="user outline icon"></i>
+    </div>
+    <div class="ui big left icon input"
+      [ngClass]="{ 'error' : registerForm.controls['lastName'].dirty && registerForm.controls['lastName'].errors?.required}">
+      <input type="text" placeholder="LastName..." formControlName="lastName">
+      <i class="user outline icon"></i>
+    </div>
+    <div class="ui big left icon input"
+      [ngClass]="{ 'error' : registerForm.controls['email'].dirty && registerForm.controls['email'].errors?.required}">
+      <input type="text" placeholder="Email..." autocomplete="email" formControlName="email">
+      <i class="envelope outline icon"></i>
+    </div>
+    <div class="ui big left icon input"
+      [ngClass]="{ 'error' : registerForm.controls['password'].dirty && registerForm.controls['password'].errors?.required}">
+      <input type="password" placeholder="Password..." autocomplete="current-password" formControlName="password">
+      <i class="key icon"></i>
+    </div>
+    <div class="ui big left icon input"
+      [ngClass]="{ 'error' : registerForm.controls['confirmPassword'].dirty && registerForm.controls['confirmPassword'].errors?.required}">
+      <input type="password" placeholder="Confirm Password..." autocomplete="current-password"
+        formControlName="confirmPassword">
+      <i class="key icon"></i>
+    </div>
+    <div *ngIf="registerForm.invalid && registerForm.touched" class="ui error message">
+      <ul class="list">
+        <li *ngIf="registerForm.controls['name'].errors?.required">Name is <strong>Required</strong></li>
+        <li *ngIf="registerForm.controls['fristName'].errors?.required">FristName is <strong>Required</strong></li>
+        <li *ngIf="registerForm.controls['lastName'].errors?.required">LastName is <strong>Required</strong></li>
+        <li *ngIf="registerForm.controls['email'].errors?.required">Email is <strong>Required</strong></li>
+        <li *ngIf="registerForm.controls['password'].errors?.required">Password is <strong>Required</strong></li>
+        <li *ngIf="registerForm.controls['confirmPassword'].errors?.required">Confirm Password is <strong>Required</strong></li>
+      </ul>
+    </div>
+    <div *ngIf="(registerStore$ | async)?.errors as errors" class="ui error message">
+      <ul class="list">
+        <li *ngFor="let error of errors"><strong>{{error}}</strong></li>
+      </ul>
+    </div>
+    <div class="form-buttons">
+      <button class="ui big button green" [disabled]="registerForm.invalid" (click)="register()">
+        Register
+      </button>
+    </div>
+  </form>
+</div>

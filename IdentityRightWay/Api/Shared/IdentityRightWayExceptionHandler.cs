@@ -17,15 +17,15 @@ namespace IdentityRightWay.Api.Shared
             {
                 var ex = context.Exception as IdentityRightWayException;
                 context.Result = new ObjectResult(
-                    new IdentityRightWayResponseBase<string>
+                    new IdentityRightWayResponseBase<IdentityRightWayException>
                     {
-                        Errors = new string[] { ex.Message },
+                        Errors = ex.Errors.ToArray(),
                         IsValid = false,
                         Payload = null,
                         TotalCount = null
                     }
                 );
-                context.HttpContext.Response.StatusCode = ex.StatusCode;
+                context.HttpContext.Response.StatusCode = (int)ex.StatusCode;
             }
         }
     }

@@ -8,12 +8,13 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace IdentityRightWay.Services.Modules.Identity.Login
 {
-    public class LoginQueryHandler : IQueryHandler<LoginQuery, IdentityRightWayResponseBase<bool>>
+    public class LoginQueryHandler : IQueryHandler<LoginQuery, IdentityRightWayResponseBase<LoginDto>>
     {
         private readonly SignInManager<AppUser> _signInManager;
 
@@ -22,26 +23,26 @@ namespace IdentityRightWay.Services.Modules.Identity.Login
             _signInManager = signInManager;
         }
 
-        public async Task<IdentityRightWayResponseBase<bool>> Handle(LoginQuery request, CancellationToken cancellationToken)
+        public async Task<IdentityRightWayResponseBase<LoginDto>> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(request.Email);
             if(user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user,request.Password, false, false);
                 if (result.Succeeded)
-                    return new IdentityRightWayResponseBase<bool> { Errors = null, IsValid = true, Payload = true };
+                    return new IdentityRightWayResponseBase<LoginDto> { Errors = null, IsValid = true, Payload = new LoginDto { IsLogged = true } };
                 else if (result.IsLockedOut)
-                    return new IdentityRightWayResponseBase<bool> { Errors = new string[] { "User Locked" }, IsValid = false, Payload = false };
+                    return new IdentityRightWayResponseBase<LoginDto> { Errors = new string[] { "User Locked" }, IsValid = false, Payload = new LoginDto { IsLogged = false } };
                 else if (result.IsNotAllowed)
-                    return new IdentityRightWayResponseBase<bool> { Errors = new string[] { "User in not Allowed" }, IsValid = false, Payload = false };
+                    return new IdentityRightWayResponseBase<LoginDto> { Errors = new string[] { "User in not Allowed" }, IsValid = false, Payload = new LoginDto { IsLogged = false } };
                 else if(result.RequiresTwoFactor)
-                    return new IdentityRightWayResponseBase<bool> { Errors = new string[] { "Requires two factor" }, IsValid = false, Payload = false };
+                    return new IdentityRightWayResponseBase<LoginDto> { Errors = new string[] { "Requires two factor" }, IsValid = false, Payload = new LoginDto { IsLogged = false } };
                 else
-                    throw new IdentityRightWayException("User not found", 404);
+                    throw new IdentityRightWayException(HttpStatusCode.NotFound, "invalid credentials");
             }
             else
             {
-                throw new IdentityRightWayException("User not found", 404);
+                throw new IdentityRightWayException(HttpStatusCode.NotFound, "Email not found");
             }
         }
     }

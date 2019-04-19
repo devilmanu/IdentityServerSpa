@@ -7,6 +7,6 @@ namespace IdentityRightWay.Services.Modules.Identity.Login
 {
     public class LoginDto
     {
-        public bool IsLoged { get; set; }
+        public bool IsLogged { get; set; }
     }
 }

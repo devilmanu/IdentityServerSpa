@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace IdentityRightWay.Services.Modules.Identity.ForgotPassword
             }
             else
             {
-                throw new IdentityRightWayException("User not found", 404);
+                throw new IdentityRightWayException(HttpStatusCode.NotFound, "User not found");
             }
         }
     }
