@@ -9,7 +9,7 @@ import { FetchUserLogin } from '../../store/actions/backend.actions';
 import { reducers, IdentityState } from '../../store/stores';
 import { AppState } from 'src/app/app.state';
 import { LoginStore } from '../../store/reducers/login.reducers';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -23,20 +23,26 @@ export class LoginComponent implements OnInit {
   });
 
   loginStore$: Observable<LoginStore>;
+  returnUrl: any;
 
 
-  constructor(private store : Store<AppState>, private router : Router) { }
+  constructor(private store : Store<AppState>, private router : Router, private activatedRoute: ActivatedRoute) { }
 
 
   ngOnInit() {
     this.loginStore$ = this.store.select(o => o.identity.login)
+    this.activatedRoute.queryParams.subscribe(o => {
+      debugger
+      this.returnUrl = o['ReturnUrl']
+    })
   }
 
   login() {
     this.store.dispatch(new FetchUserLogin(
       { 
         email : this.loginForm.get('email').value,
-        password : this.loginForm.get('password').value
+        password : this.loginForm.get('password').value,
+        returnUrl : this.returnUrl
       }))
   }
   goToRegister(){

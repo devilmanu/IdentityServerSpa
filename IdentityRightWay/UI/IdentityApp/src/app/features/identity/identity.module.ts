@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, InjectionToken } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { IdentityRoutingModule } from './identity-routing.module';
@@ -19,6 +19,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { BackendEffects } from './store/effects/backend.effects';
 import { RegisterUserPageComponent } from './pages/register-user-page/register-user-page.component';
 import { ErrorInterceptor } from 'src/app/core/ErrorInterceptor';
+import { ConsentComponent } from './components/consent/consent.component';
+import { ActivatedRouteSnapshot } from '@angular/router';
+
+const externalUrlProvider = new InjectionToken('externalUrlRedirectResolver');
 
 @NgModule({
   declarations: [
@@ -27,7 +31,7 @@ import { ErrorInterceptor } from 'src/app/core/ErrorInterceptor';
     ResetPasswordPageComponent, 
     LoginComponent, 
     ForgotPasswordComponent, 
-    ResetPasswordComponent, ConsentPageComponent, RegisterUserComponent, RegisterUserPageComponent],
+    ResetPasswordComponent, ConsentPageComponent, RegisterUserComponent, RegisterUserPageComponent, ConsentComponent],
   imports: [
     CommonModule,
     IdentityRoutingModule,
@@ -43,7 +47,14 @@ import { ErrorInterceptor } from 'src/app/core/ErrorInterceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }
+    },
+    {
+      provide: externalUrlProvider,
+      useValue: (route: ActivatedRouteSnapshot) => {
+          const externalUrl = route.paramMap.get('externalUrl');
+          window.open(externalUrl, '_self');
+      },
+  },
   ]
 })
 export class IdentityModule { }

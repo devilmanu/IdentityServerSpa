@@ -10,6 +10,7 @@ using IdentityRightWay.Domain.Entities;
 using IdentityRightWay.Infrastructure.Bus.Commands;
 using IdentityRightWay.Infrastructure.Bus.Queries;
 using IdentityRightWay.Infrastructure.EntityFramework;
+using IdentityRightWay.Infrastructure.IdentityServer4.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -78,6 +79,22 @@ namespace IdentityRightWay
             .AddEntityFrameworkStores<AppIdentityDbContext>()
             .AddDefaultTokenProviders();
 
+            //https://localhost:5001/.well-known/openid-configuration
+            services.AddIdentityServer(options =>
+                {
+                    options.Events.RaiseErrorEvents = true;
+                    options.Events.RaiseInformationEvents = true;
+                    options.Events.RaiseFailureEvents = true;
+                    options.Events.RaiseSuccessEvents = true;
+                    //options.UserInteraction.LoginUrl = "/login";
+                    //options.UserInteraction.LoginReturnUrlParameter = "/kk";
+                })
+                .AddDeveloperSigningCredential()
+                .AddInMemoryIdentityResources(Resources.IdentityResources)
+                .AddInMemoryApiResources(Resources.ApiResources)
+                .AddInMemoryClients(Clients.Get())
+                .AddAspNetIdentity<AppUser>();
+
             //services.AddAuthentication("cookies")
             //    .AddCookie("cookie", opts => opts.)
 
@@ -88,6 +105,8 @@ namespace IdentityRightWay
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -109,6 +128,7 @@ namespace IdentityRightWay
                 app.UseHsts();
             }
 
+
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -123,7 +143,10 @@ namespace IdentityRightWay
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseIdentityServer();
+
             app.UseMvc();
+
 
             app.UseSpa(spa =>
             {
@@ -131,7 +154,6 @@ namespace IdentityRightWay
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "UI/IdentityApp";
-
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "ng serve");
