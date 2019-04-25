@@ -22,7 +22,10 @@ export class BackendEffects
         ofType<FetchUserLogin>(IdentityBackendActionsTypes.FetchUserLogin),
         switchMap((action) => this.identityApiService.login(action.payload.email, action.payload.password,action.payload.returnUrl).pipe(
             mergeMap(o => o.isValid 
-                ? of(window.open(action.payload.returnUrl, '_self')) 
+                ? of([
+                    new FetchUserLoginSuccess(o),
+                    window.open(action.payload.returnUrl, '_self')
+                ]) 
                 : throwError(o.errors)),
             catchError((err) => of(new FetchUserLoginFail(err)))
         ))

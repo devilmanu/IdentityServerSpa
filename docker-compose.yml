@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  influxdb:
+    # Full tag list: https://hub.docker.com/r/library/influxdb/tags/
+    image: influxdb:latest
+    container_name: influxdb
+    volumes:
+      # Mount for influxdb data directory
+      - C:\Data\influxDb\data:/var/lib/influxdb
+      # Mount for influxdb configuration
+      - C:\Data\influxDb\config:/etc/influxdb/
+    ports:
+      # The API for InfluxDB is served on port 8086
+      - "8086:8086"
+      - "8082:8082"
+      # UDP Port
+      - "8089:8089/udp"
+    networks:
+      - esnet
+
+  grafana:
+    image: grafana/grafana:5.1.0
+    ports:
+      - 3000:3000
+    user: "104"
+    networks:
+      - esnet
+
+  chronograf:
+    image: chronograf:latest
+    volumes:
+      - C:\Data\Chronograf\data:/var/lib/chronograf
+    ports:
+      - "8888:8888"
+    networks:
+      - esnet
+      
+networks:
+  esnet:
+    driver: bridge  

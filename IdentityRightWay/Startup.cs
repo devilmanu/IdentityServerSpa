@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using App.Metrics.AspNetCore.Tracking;
 using FluentValidation.AspNetCore;
 using IdentityRightWay.Api.Shared;
 using IdentityRightWay.Domain.Entities;
@@ -17,6 +18,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,17 +49,31 @@ namespace IdentityRightWay
             services.AddScoped<IQueryBus, QueryBus>();
 
             var migrationAssemby = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
+            //var metrics = new MetricsBuilder()
+            //    .Report.ToInfluxDb("http://influxdb:8086", "metricsdatabase")
+            //    .Build();
+
+            //services.AddMetrics(metrics);
+            //services.AddSingleton<IStartupFilter>(new DefaultMetricsTrackingStartupFilter());
+
             services.AddMvc(opts =>
             {
                 opts.Filters.Add(new IdentityRightWayExceptionHandler());
                 opts.Filters.Add(new IdentityRightWayValidationHandler());
+                opts.Filters.Add(new MetricsResourceFilter(new MvcRouteTemplateResolver()));
             })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1) //TODO: 2.1 por la mierda de appmetrics
+                .AddFluentValidation() //añadimos flient validatos
                 .ConfigureApiBehaviorOptions(opts =>
                 {
                     opts.SuppressModelStateInvalidFilter = true;
-                });
+                })
+                .AddMetrics();
+            //services.AddMetrics(opts =>
+            //{
+            //    opts.Report.("http://localhost:9200", "metricsindex");
+            //})
 
             services.Scan(scan => scan
                 .FromAssembliesOf(typeof(Startup))
@@ -107,7 +124,7 @@ namespace IdentityRightWay
             });
 
 
-
+            //swagger
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "UI/IdentityApp/dist";
