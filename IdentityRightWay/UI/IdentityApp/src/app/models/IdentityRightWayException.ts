@@ -1,6 +1,9 @@
-export interface IdentityRightWayException
-{
-    message : string
-    errors : string[]
-    statusCode : number
+/**
+ * This is a TypeGen auto-generated file.
+ * Any changes made to this file can be lost when this file is regenerated.
+ */
+
+export interface IdentityRightWayException {
+    statusCode: number;
+    errors: string[];
 }

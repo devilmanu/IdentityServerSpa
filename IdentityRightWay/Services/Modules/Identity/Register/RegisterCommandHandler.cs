@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,9 +35,15 @@ namespace IdentityRightWay.Services.Modules.Identity.Register
                 };
                 var result = await _userManager.CreateAsync(userToRegister, request.Password);
                 if (result.Succeeded)
+                {
+                    var userCreated = await _userManager.FindByEmailAsync(request.Email);
+                    await _userManager.AddClaimAsync(userCreated, new Claim("fcc.api", "Employee"));
                     return new Unit();
+                }
                 else
+                {
                     throw new IdentityRightWayException(HttpStatusCode.NotFound, result.Errors.Select(o => o.Description).ToArray());
+                }
             }
             else
             {

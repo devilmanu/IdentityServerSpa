@@ -1,10 +1,13 @@
-﻿using System;
+﻿using IdentityRightWay.Infrastructure.TypeGen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TypeGen.Core.TypeAnnotations;
 
 namespace IdentityRightWay.Services.Modules.Consent.GetConsent
 {
+    [ExportTsInterface(OutputDir = ExportPathTsInterfaces.BasePath)]
     public class ConsentDto : ConsentInputDto
     {
         public string ClientName { get; set; }
@@ -16,7 +19,7 @@ namespace IdentityRightWay.Services.Modules.Consent.GetConsent
         public IEnumerable<ScopeDto> ResourceScopes { get; set; }
 
     }
-
+    [ExportTsInterface(OutputDir = ExportPathTsInterfaces.BasePath)]
     public class ScopeDto
     {
         public string Name { get; set; }
@@ -26,7 +29,7 @@ namespace IdentityRightWay.Services.Modules.Consent.GetConsent
         public bool Required { get; set; }
         public bool Checked { get; set; }
     }
-
+    [ExportTsInterface(OutputDir = ExportPathTsInterfaces.BasePath)]
     public class ConsentInputDto
     {
         public string Button { get; set; }

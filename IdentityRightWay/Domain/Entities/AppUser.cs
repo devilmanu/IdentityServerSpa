@@ -8,5 +8,6 @@ namespace IdentityRightWay.Domain.Entities
 {
     public class AppUser : IdentityUser<Guid>
     {
+
     }
 }

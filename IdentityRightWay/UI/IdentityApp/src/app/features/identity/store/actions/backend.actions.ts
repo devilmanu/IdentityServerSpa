@@ -1,12 +1,12 @@
 import { Action } from '@ngrx/store';
 import { LoginDto } from 'src/app/models/LoginDto';
-import { LoginCommand } from 'src/app/models/LoginCommand';
 import { RegisterCommand } from 'src/app/models/RegisterCommand';
 import { IdentityRightWayResponseBase } from 'src/app/models/IdentityRightWayResponseBase';
 import { GetConsentQuery } from 'src/app/models/GetConsentQuery';
 import { ConsentDto } from 'src/app/models/ConsentDto';
 import { AcceptConsentDto } from 'src/app/models/AcceptConsentDto';
 import { AcceptConsentCommand } from 'src/app/models/AcceptConsentCommand';
+import { LoginQuery } from 'src/app/models/loginQuery';
 
 
 export enum IdentityBackendActionsTypes
@@ -28,7 +28,7 @@ export enum IdentityBackendActionsTypes
 export class FetchUserLogin implements Action
 {
     readonly type = IdentityBackendActionsTypes.FetchUserLogin;
-    constructor(public payload : LoginCommand){}
+    constructor(public payload : LoginQuery){}
 }
 
 export class FetchUserLoginSuccess implements Action

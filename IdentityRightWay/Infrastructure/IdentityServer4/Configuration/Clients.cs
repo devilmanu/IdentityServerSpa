@@ -367,14 +367,38 @@ namespace IdentityRightWay.Infrastructure.IdentityServer4.Configuration
                 ///////////////////////////////////////////
                 // JS OIDC + PKCE
                 //////////////////////////////////////////
+                //new Client
+                //{
+                //    ClientId = "angular_spa",
+                //    ClientName = "Angular 4 Client",
+                //    AllowedGrantTypes = GrantTypes.Code,
+                //    RequirePkce = true,
+                //    RequireClientSecret = false,
+                //    AllowedScopes = new List<string> {"openid", "profile", "api1"},
+                //    RedirectUris = new List<string> {"http://localhost:4200/auth-callback"},
+                //    PostLogoutRedirectUris = new List<string> {"http://localhost:4200/"},
+                //    AllowedCorsOrigins = new List<string> {"http://localhost:4200"},
+                //    AllowAccessTokensViaBrowser = true
+                //},
+
+                ///////////////////////////////////////////
+                // JS OIDC + PKCE
+                //////////////////////////////////////////
                 new Client
                 {
-                    ClientId = "angular_spa",
-                    ClientName = "Angular 4 Client",
+                    ClientId = "angular_spa_fcc",
+                    ClientName = "Angular 4 fcc",
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    AllowedScopes = new List<string> {"openid", "profile", "api1"},
+                    AllowedScopes = new List<string> {
+                        "openid",
+                        "profile",
+                        "fcc.api"
+                        //"fcc.api.employee",
+                        //"fcc.api.admin",
+                        //"fcc.api.guest"
+                    },
                     RedirectUris = new List<string> {"http://localhost:4200/auth-callback"},
                     PostLogoutRedirectUris = new List<string> {"http://localhost:4200/"},
                     AllowedCorsOrigins = new List<string> {"http://localhost:4200"},

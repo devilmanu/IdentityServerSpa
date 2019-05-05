@@ -35,6 +35,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Scrutor" Version="3.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="TypeGen" Version="2.2.1" />
   </ItemGroup>
 
 
@@ -44,6 +45,7 @@
     <Folder Include="Services\Modules\Consent\CancelConsent\" />
     <Folder Include="Services\Modules\Identity\Logout\" />
     <Folder Include="UI\" />
+    <Folder Include="UI\IdentityApp\src\app\models\" />
   </ItemGroup>
 
 
@@ -85,6 +87,10 @@
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
     </ItemGroup>
+  </Target>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="dotnet typegen generate"></Exec>
   </Target>
 
 </Project>

@@ -1,24 +1,16 @@
-export interface ConsentDto
-{
-    ClientName: string;
-    ClientUrl: string;
-    ClientLogoUrl: string;
-    AllowRememberConsent: boolean;
+/**
+ * This is a TypeGen auto-generated file.
+ * Any changes made to this file can be lost when this file is regenerated.
+ */
 
-    IdentityScopes: ScopeDto[];
-    ResourceScopes: ScopeDto[];
-    Button: string;
-    ScopesConsented: string[];
-    RememberConsent: boolean;
-    ReturnUrl: string;
-}
+import { ConsentInputDto } from "../models/consentInputDto";
+import { ScopeDto } from "../models/scopeDto";
 
-export interface ScopeDto
-{
-    Name: string;
-    DisplayName: string;
-    Description: string;
-    Emphasize: boolean;
-    Required: boolean;
-    Checked: boolean;
+export interface ConsentDto extends ConsentInputDto {
+    clientName: string;
+    clientUrl: string;
+    clientLogoUrl: string;
+    allowRememberConsent: boolean;
+    identityScopes: ScopeDto[];
+    resourceScopes: ScopeDto[];
 }

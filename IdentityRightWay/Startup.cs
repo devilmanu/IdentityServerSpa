@@ -12,6 +12,8 @@ using IdentityRightWay.Infrastructure.Bus.Commands;
 using IdentityRightWay.Infrastructure.Bus.Queries;
 using IdentityRightWay.Infrastructure.EntityFramework;
 using IdentityRightWay.Infrastructure.IdentityServer4.Configuration;
+using IdentityRightWay.Services.Modules.Profile;
+using IdentityServer4.Services;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -110,7 +112,8 @@ namespace IdentityRightWay
                 .AddInMemoryIdentityResources(Resources.IdentityResources)
                 .AddInMemoryApiResources(Resources.ApiResources)
                 .AddInMemoryClients(Clients.Get())
-                .AddAspNetIdentity<AppUser>();
+                .AddAspNetIdentity<AppUser>()
+                .AddProfileService<ProfileService>();
 
             //services.AddAuthentication("cookies")
             //    .AddCookie("cookie", opts => opts.)

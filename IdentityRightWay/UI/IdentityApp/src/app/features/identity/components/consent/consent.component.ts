@@ -33,7 +33,7 @@ export class ConsentComponent implements OnInit {
         RememberConsent : true,
         ReturnUrl : this.returnUrl,
         ScopesConsented : [
-          "api1",
+          "fcc.api",
           "profile",
           "openid"
           ]
